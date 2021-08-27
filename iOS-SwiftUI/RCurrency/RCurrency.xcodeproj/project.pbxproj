@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1AA79B26D91C0B009034CD /* TestSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1AA79A26D91C0B009034CD /* TestSearchView.swift */; };
 		0A6141A326D785230028460F /* RCurrencyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6141A226D785230028460F /* RCurrencyApp.swift */; };
 		0A6141A526D785230028460F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6141A426D785230028460F /* ContentView.swift */; };
 		0A6141A726D785260028460F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A6141A626D785260028460F /* Assets.xcassets */; };
@@ -18,9 +19,12 @@
 		0A660EC026D7E44E00419443 /* DoubleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A660EBF26D7E44E00419443 /* DoubleInput.swift */; };
 		0A660EC226D7F0B900419443 /* CurrencyRowContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A660EC126D7F0B900419443 /* CurrencyRowContainerView.swift */; };
 		0ABD395726D8FAB600A103DB /* CurrencyRowDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD395626D8FAB600A103DB /* CurrencyRowDataView.swift */; };
+		0ABD395A26D9090B00A103DB /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD395926D9090B00A103DB /* Symbols.swift */; };
+		0ABD395C26D9113F00A103DB /* SymbolPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD395B26D9113F00A103DB /* SymbolPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A1AA79A26D91C0B009034CD /* TestSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSearchView.swift; sourceTree = "<group>"; };
 		0A61419F26D785230028460F /* RCurrency.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCurrency.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A6141A226D785230028460F /* RCurrencyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCurrencyApp.swift; sourceTree = "<group>"; };
 		0A6141A426D785230028460F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -31,6 +35,8 @@
 		0A660EBF26D7E44E00419443 /* DoubleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleInput.swift; sourceTree = "<group>"; };
 		0A660EC126D7F0B900419443 /* CurrencyRowContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRowContainerView.swift; sourceTree = "<group>"; };
 		0ABD395626D8FAB600A103DB /* CurrencyRowDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRowDataView.swift; sourceTree = "<group>"; };
+		0ABD395926D9090B00A103DB /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
+		0ABD395B26D9113F00A103DB /* SymbolPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,8 +91,9 @@
 		0A660EB726D7BFEC00419443 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0ABD395826D9037800A103DB /* Components */,
 				0A6141A426D785230028460F /* ContentView.swift */,
+				0ABD395D26D9158900A103DB /* Symbol Picker */,
+				0ABD395826D9037800A103DB /* Components */,
 				0A660EC126D7F0B900419443 /* CurrencyRowContainerView.swift */,
 				0ABD395626D8FAB600A103DB /* CurrencyRowDataView.swift */,
 				0A660EBD26D7E26D00419443 /* CurrencyRowView.swift */,
@@ -98,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				0A660EB926D7CC3900419443 /* Rate.swift */,
+				0ABD395926D9090B00A103DB /* Symbols.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -108,6 +116,15 @@
 				0A660EBF26D7E44E00419443 /* DoubleInput.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		0ABD395D26D9158900A103DB /* Symbol Picker */ = {
+			isa = PBXGroup;
+			children = (
+				0ABD395B26D9113F00A103DB /* SymbolPickerView.swift */,
+				0A1AA79A26D91C0B009034CD /* TestSearchView.swift */,
+			);
+			path = "Symbol Picker";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,9 +205,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A660EBE26D7E26D00419443 /* CurrencyRowView.swift in Sources */,
+				0ABD395A26D9090B00A103DB /* Symbols.swift in Sources */,
+				0ABD395C26D9113F00A103DB /* SymbolPickerView.swift in Sources */,
 				0A6141A526D785230028460F /* ContentView.swift in Sources */,
 				0A660EBA26D7CC3900419443 /* Rate.swift in Sources */,
 				0ABD395726D8FAB600A103DB /* CurrencyRowDataView.swift in Sources */,
+				0A1AA79B26D91C0B009034CD /* TestSearchView.swift in Sources */,
 				0A660EC226D7F0B900419443 /* CurrencyRowContainerView.swift in Sources */,
 				0A6141A326D785230028460F /* RCurrencyApp.swift in Sources */,
 				0A660EC026D7E44E00419443 /* DoubleInput.swift in Sources */,
@@ -332,7 +352,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -362,7 +382,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
