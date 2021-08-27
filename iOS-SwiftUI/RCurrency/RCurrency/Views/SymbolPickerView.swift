@@ -10,7 +10,8 @@ import SwiftUI
 struct SymbolPickerView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding var selectedSymbol: String
+    var action: (String) -> Void
+//    @Binding var selectedSymbol: String
     
     @State private var searchText = ""
     
@@ -18,8 +19,7 @@ struct SymbolPickerView: View {
         List {
             ForEach(searchResults.sorted(by: <), id: \.key) { symbol in
                 Button(action: {
-                    selectedSymbol = symbol.key
-                    presentationMode.wrappedValue.dismiss()
+                    pickedSymbol(symbol.key)
                 }) {
                     HStack {
                         Image(symbol.key.lowercased())
@@ -30,6 +30,11 @@ struct SymbolPickerView: View {
         }
         .searchable(text: $searchText)
         .navigationBarTitle("Pick Currency", displayMode: .inline)
+    }
+    
+    private func pickedSymbol(_ symbol: String) {
+        action(symbol)
+        presentationMode.wrappedValue.dismiss()
     }
     
     var searchResults: Dictionary<String, String> {
@@ -46,7 +51,8 @@ struct SymbolPickerView_Previews: PreviewProvider {
     static var previews: some View {
         Symbols.loadData()
         return NavigationView {
-            SymbolPickerView(selectedSymbol: .constant("GBP"))
+//            SymbolPickerView(selectedSymbol: .constant("GBP"))
+            SymbolPickerView(action: { _ in } )
         }
     }
 }

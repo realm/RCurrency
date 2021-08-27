@@ -11,6 +11,8 @@ import RealmSwift
 struct CurrencyListContainerView: View {
     @ObservedResults(UserSymbols.self) var userSymbolResults
     
+    @State private var showingAddSymbol = false
+    
     var userSymbols: UserSymbols {
         userSymbolResults.first ?? UserSymbols()
     }
@@ -31,7 +33,23 @@ struct CurrencyListContainerView: View {
             }
             Spacer()
         }
+        .sheet(isPresented: $showingAddSymbol) {
+            SymbolPickerView(action: addSymbol)
+        }
+        .navigationBarTitle("Watched Currencies", displayMode: .inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { showingAddSymbol.toggle() }) {
+                    Image(systemName: "plus")
+                }
+            }
+        }
     }
+    
+    private func addSymbol(_ symobol: String) {
+        // TODO:
+    }
+    
     private func deleteSymbol(at offsets: IndexSet) {
         do {
             let realm = try Realm()
