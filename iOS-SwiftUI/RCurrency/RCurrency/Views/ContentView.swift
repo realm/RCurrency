@@ -10,14 +10,19 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         NavigationView {
-            CurrencyRowContainerView(baseSymbol: "GBP", baseAmount: 1, symbol: "USD")
+            CurrencyListContainerView()
         }
+        .onAppear(perform: bootstrap)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .onAppear(perform: { Symbols.loadData() })
     }
+}
+
+private func bootstrap() {
+    Symbols.loadData()
+    UserSymbols.bootstrap()
 }
