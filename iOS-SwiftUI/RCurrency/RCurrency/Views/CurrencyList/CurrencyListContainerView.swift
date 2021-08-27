@@ -46,8 +46,19 @@ struct CurrencyListContainerView: View {
         }
     }
     
-    private func addSymbol(_ symobol: String) {
-        // TODO:
+    private func addSymbol(_ symbol: String) {
+        do {
+            let realm = try Realm()
+            try realm.write() {
+                guard let thawedUserSymbols = userSymbols.thaw() else {
+                    print("Couldn't thaw userSymbols")
+                    return
+                }
+                thawedUserSymbols.symbols.append(symbol)
+            }
+        } catch {
+            print("Unable to delete symbol from Realm")
+        }
     }
     
     private func deleteSymbol(at offsets: IndexSet) {
