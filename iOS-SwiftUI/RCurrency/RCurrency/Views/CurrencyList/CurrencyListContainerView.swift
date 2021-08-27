@@ -32,10 +32,12 @@ struct CurrencyListContainerView: View {
                 .onDelete(perform: deleteSymbol)
             }
             Spacer()
+            NavigationLink(destination: SymbolPickerView(action: addSymbol),
+                           isActive: $showingAddSymbol) {}
         }
-        .sheet(isPresented: $showingAddSymbol) {
-            SymbolPickerView(action: addSymbol)
-        }
+//        .sheet(isPresented: $showingAddSymbol) {
+//            SymbolPickerView(action: addSymbol)
+//        }
         .navigationBarTitle("Watched Currencies", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -48,6 +50,7 @@ struct CurrencyListContainerView: View {
     
     private func addSymbol(_ symbol: String) {
         do {
+            showingAddSymbol = false
             let realm = try Realm()
             try realm.write() {
                 guard let thawedUserSymbols = userSymbols.thaw() else {

@@ -15,22 +15,21 @@ struct SymbolPickerView: View {
     @State private var searchText = ""
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(searchResults.sorted(by: <), id: \.key) { symbol in
-                    Button(action: {
-                        pickedSymbol(symbol.key)
-                    }) {
-                        HStack {
-                            Image(symbol.key.lowercased())
-                            Text("\(symbol.key): \(symbol.value)")
-                        }
+        List {
+            ForEach(searchResults.sorted(by: <), id: \.key) { symbol in
+                Button(action: {
+                    pickedSymbol(symbol.key)
+                }) {
+                    HStack {
+                        Image(symbol.key.lowercased())
+                        Text("\(symbol.key): \(symbol.value)")
                     }
+                    .foregroundColor(.primary)
                 }
             }
-            .searchable(text: $searchText)
-            .navigationBarTitle("Pick Currency", displayMode: .inline)
         }
+        .searchable(text: $searchText)
+        .navigationBarTitle("Pick Currency", displayMode: .inline)
     }
     
     private func pickedSymbol(_ symbol: String) {
@@ -51,9 +50,9 @@ struct SymbolPickerView: View {
 struct SymbolPickerView_Previews: PreviewProvider {
     static var previews: some View {
         Symbols.loadData()
-//        return NavigationView {
+        return NavigationView {
 //            SymbolPickerView(selectedSymbol: .constant("GBP"))
-        return SymbolPickerView(action: { _ in } )
-//        }
+        SymbolPickerView(action: { _ in } )
+        }
     }
 }
