@@ -32,12 +32,10 @@ struct CurrencyListContainerView: View {
                 .onDelete(perform: deleteSymbol)
             }
             Spacer()
-            NavigationLink(destination: SymbolPickerView(action: addSymbol),
+            NavigationLink(destination: SymbolPickerView(action: addSymbol,
+                                                         existingSymbols: Array(userSymbols.symbols)),
                            isActive: $showingAddSymbol) {}
         }
-//        .sheet(isPresented: $showingAddSymbol) {
-//            SymbolPickerView(action: addSymbol)
-//        }
         .navigationBarTitle("Watched Currencies", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

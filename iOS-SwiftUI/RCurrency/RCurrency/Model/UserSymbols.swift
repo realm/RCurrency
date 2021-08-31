@@ -29,7 +29,7 @@ extension UserSymbols {
     static func bootstrap() {
         do {
             let realm = try Realm()
-            let symbols = ["GBP", "EUR", "USD", "CHF", "JPY", "GBP", "EUR", "USD", "CHF", "JPY", "GBP", "EUR", "USD", "CHF", "JPY", "GBP", "EUR", "USD", "CHF", "JPY"]
+            let symbols = ["GBP", "EUR", "USD", "CHF", "JPY"]
             try realm.write() {
                 realm.delete(realm.objects(UserSymbols.self))
                 realm.add(UserSymbols(baseSymbol: "GBP", symbols: symbols))

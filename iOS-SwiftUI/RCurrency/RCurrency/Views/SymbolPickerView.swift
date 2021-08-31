@@ -11,6 +11,7 @@ struct SymbolPickerView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var action: (String) -> Void
+    let existingSymbols: [String]
     
     @State private var searchText = ""
     
@@ -24,8 +25,9 @@ struct SymbolPickerView: View {
                         Image(symbol.key.lowercased())
                         Text("\(symbol.key): \(symbol.value)")
                     }
-                    .foregroundColor(.primary)
+                    .foregroundColor(existingSymbols.contains(symbol.key) ? .secondary : .primary)
                 }
+                .disabled(existingSymbols.contains(symbol.key))
             }
         }
         .searchable(text: $searchText)
@@ -51,8 +53,7 @@ struct SymbolPickerView_Previews: PreviewProvider {
     static var previews: some View {
         Symbols.loadData()
         return NavigationView {
-//            SymbolPickerView(selectedSymbol: .constant("GBP"))
-        SymbolPickerView(action: { _ in } )
+        SymbolPickerView(action: { _ in }, existingSymbols: ["GBP", "USD"] )
         }
     }
 }
