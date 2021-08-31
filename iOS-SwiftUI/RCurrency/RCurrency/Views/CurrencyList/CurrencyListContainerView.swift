@@ -12,6 +12,8 @@ struct CurrencyListContainerView: View {
     @ObservedResults(UserSymbols.self) var userSymbolResults
     
     @State private var showingAddSymbol = false
+    @State private var showingSetBaseSymbol = false
+    @State private var baseAmount = 1.0
     
     var userSymbols: UserSymbols {
         userSymbolResults.first ?? UserSymbols()
@@ -19,14 +21,23 @@ struct CurrencyListContainerView: View {
     
     var body: some View {
         VStack {
-            CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
-                                     baseAmount: 1.0,
-                                     symbol: userSymbols.baseSymbol)
+            VStack {
+                CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
+                                         baseAmount: $baseAmount,
+                                         symbol: userSymbols.baseSymbol,
+                                         action: { showingSetBaseSymbol.toggle() })
+                HStack {
+                    Text("Base currency")
+                        .font(.caption)
+                    Spacer()
+                }
+            }
+            .padding(.horizontal)
             Divider()
             List {
                 ForEach(userSymbols.symbols, id: \.self) { symbol in
                     CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
-                                             baseAmount: 1.0,
+                                             baseAmount: $baseAmount,
                                              symbol: symbol)
                 }
                 .onDelete(perform: deleteSymbol)
@@ -35,14 +46,36 @@ struct CurrencyListContainerView: View {
             NavigationLink(destination: SymbolPickerView(action: addSymbol,
                                                          existingSymbols: Array(userSymbols.symbols)),
                            isActive: $showingAddSymbol) {}
+            NavigationLink(destination: SymbolPickerView(action: setBaseCurrency,
+                                                         existingSymbols: []),
+                           isActive: $showingSetBaseSymbol) {}
         }
         .navigationBarTitle("Watched Currencies", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { showingAddSymbol.toggle() }) {
+                Button(action: {
+                    showingAddSymbol.toggle()
+                }) {
                     Image(systemName: "plus")
                 }
             }
+        }
+    }
+    
+    private func setBaseCurrency(_ symbol: String) {
+        showingSetBaseSymbol = false
+        do {
+            showingAddSymbol = false
+            let realm = try Realm()
+            try realm.write() {
+                guard let thawedUserSymbols = userSymbols.thaw() else {
+                    print("Couldn't thaw userSymbols")
+                    return
+                }
+                thawedUserSymbols.baseSymbol = symbol
+            }
+        } catch {
+            print("Unable to set base symbole in Realm")
         }
     }
     

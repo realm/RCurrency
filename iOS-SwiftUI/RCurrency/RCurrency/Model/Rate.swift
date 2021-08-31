@@ -6,7 +6,7 @@
 //
 
 import RealmSwift
-import RealmSwift
+import Foundation
 
 class Rate: Object, ObjectKeyIdentifiable, Codable {
     var motd = Motd()
@@ -15,6 +15,7 @@ class Rate: Object, ObjectKeyIdentifiable, Codable {
     var info = Info()
     @Persisted var date = ""
     @Persisted var result = 0.0
+    @Persisted var pendingRefresh: Bool? = false
     
     convenience init(from: String, to: String, date: String, result: Double) {
         self.init()
@@ -25,6 +26,16 @@ class Rate: Object, ObjectKeyIdentifiable, Codable {
     }
 }
 
+extension Rate {
+    var isToday: Bool {
+        let today = Date().description.prefix(10)
+        return  date == today
+    }
+    
+    var needsRefresh: Bool {
+        !(isToday && !(pendingRefresh ?? false))
+    }
+}
 
 class Motd: Codable {
     var msg = ""
