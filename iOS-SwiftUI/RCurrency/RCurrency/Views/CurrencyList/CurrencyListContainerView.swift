@@ -10,6 +10,7 @@ import RealmSwift
 
 struct CurrencyListContainerView: View {
     @ObservedResults(UserSymbols.self) var userSymbolResults
+    @ObservedResults(Rate.self) var rates
     
     @State private var showingAddSymbol = false
     @State private var showingSetBaseSymbol = false
@@ -42,6 +43,7 @@ struct CurrencyListContainerView: View {
                 }
                 .onDelete(perform: deleteSymbol)
             }
+            .refreshable(action: refreshAll)
             Spacer()
             NavigationLink(destination: SymbolPickerView(action: addSymbol,
                                                          existingSymbols: Array(userSymbols.symbols)),
@@ -107,6 +109,20 @@ struct CurrencyListContainerView: View {
             }
         } catch {
             print("Unable to delete symbol from Realm")
+        }
+    }
+    
+    private func refreshAll() {
+        // TODO: set prendingRefresh to true for all ratea
+        print ("Refresh")
+        do {
+            try Realm().write() {
+                rates.forEach() { rate in
+                    rate.thaw()?.pendingRefresh = true
+                }
+            }
+        } catch {
+            print("Failed to update pendingRefresh for all objects")
         }
     }
 }

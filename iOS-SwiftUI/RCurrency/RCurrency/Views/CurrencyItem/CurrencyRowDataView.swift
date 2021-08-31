@@ -63,7 +63,12 @@ struct CurrencyRowDataView: View {
 struct CurrencyRowDataView_Previews: PreviewProvider {
     static var previews: some View {
         let rate = Rate(from: "GBP", to: "USD", date: "now", result: 1.2345)
-        return CurrencyRowDataView(rate: rate, baseAmount: .constant(1.0))
-            .padding()
+        let rate2 = Rate(from: "USD", to: "GBP", date: "now", result: 0.87611)
+        rate2.pendingRefresh = true
+        
+        return List {
+            CurrencyRowDataView(rate: rate, baseAmount: .constant(1.0))
+            CurrencyRowDataView(rate: rate2, baseAmount: .constant(1.0))
+        }
     }
 }
