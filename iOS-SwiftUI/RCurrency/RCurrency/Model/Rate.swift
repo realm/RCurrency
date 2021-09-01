@@ -15,8 +15,9 @@ class Rate: Object, ObjectKeyIdentifiable, Codable {
     var info = Info()
     @Persisted var date = ""
     @Persisted var result = 0.0
-    @Persisted var pendingRefresh: Bool? = false
-    
+}
+
+extension Rate {
     convenience init(from: String, to: String, date: String, result: Double) {
         self.init()
         self.query?.from = from
@@ -30,10 +31,6 @@ extension Rate {
     var isToday: Bool {
         let today = Date().description.prefix(10)
         return  date == today
-    }
-    
-    var needsRefresh: Bool {
-        !(isToday && !(pendingRefresh ?? false))
     }
 }
 

@@ -11,7 +11,6 @@ struct CurrencyRowView: View {
     var value: Double
     let symbol: String
     @Binding var baseValue: Double
-    let pendingRefresh: Bool
     var action: () -> Void = {}
     
     @State private var amount = "0.0"
@@ -30,15 +29,9 @@ struct CurrencyRowView: View {
                 .foregroundColor(.primary)
                 Spacer()
                 TextField("Amount", text: $amount)
+                    .keyboardType(.decimalPad)
                     .onChange(of: amount, perform: updateValue)
                     .font(.largeTitle)
-            }
-            if pendingRefresh {
-                HStack {
-                    Text("Pending refresh")
-                        .font(.caption)
-                    Spacer()
-                }
             }
         }
         .onAppear(perform: calcLocalState)
@@ -64,8 +57,8 @@ struct CurrencyRowView: View {
 struct CurrencyRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            CurrencyRowView(value: 3.23, symbol: "USD", baseValue: .constant(1.0), pendingRefresh: false)
-            CurrencyRowView(value: 1.0, symbol: "GBP", baseValue: .constant(10.0), pendingRefresh: true)
+            CurrencyRowView(value: 3.23, symbol: "USD", baseValue: .constant(1.0))
+            CurrencyRowView(value: 1.0, symbol: "GBP", baseValue: .constant(10.0))
         }
     }
 }

@@ -15,6 +15,7 @@ struct CurrencyListContainerView: View {
     @State private var showingAddSymbol = false
     @State private var showingSetBaseSymbol = false
     @State private var baseAmount = 1.0
+    @State private var refreshNeeded = false
     
     var userSymbols: UserSymbols {
         userSymbolResults.first ?? UserSymbols()
@@ -26,6 +27,7 @@ struct CurrencyListContainerView: View {
                 CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
                                          baseAmount: $baseAmount,
                                          symbol: userSymbols.baseSymbol,
+                                         refreshNeeded: refreshNeeded,
                                          action: { showingSetBaseSymbol.toggle() })
                 HStack {
                     Text("Base currency")
@@ -39,7 +41,8 @@ struct CurrencyListContainerView: View {
                 ForEach(userSymbols.symbols, id: \.self) { symbol in
                     CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
                                              baseAmount: $baseAmount,
-                                             symbol: symbol)
+                                             symbol: symbol,
+                                             refreshNeeded: refreshNeeded)
                 }
                 .onDelete(perform: deleteSymbol)
             }
@@ -52,7 +55,7 @@ struct CurrencyListContainerView: View {
                                                          existingSymbols: []),
                            isActive: $showingSetBaseSymbol) {}
         }
-        .navigationBarTitle("Watched Currencies", displayMode: .inline)
+        .navigationBarTitle("RCurrency", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
@@ -113,16 +116,10 @@ struct CurrencyListContainerView: View {
     }
     
     private func refreshAll() {
-        // TODO: set prendingRefresh to true for all ratea
-        print ("Refresh")
-        do {
-            try Realm().write() {
-                rates.forEach() { rate in
-                    rate.thaw()?.pendingRefresh = true
-                }
-            }
-        } catch {
-            print("Failed to update pendingRefresh for all objects")
+        print ("Refreshing all")
+        refreshNeeded = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            refreshNeeded = false
         }
     }
 }

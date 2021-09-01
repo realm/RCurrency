@@ -9,7 +9,6 @@ import SwiftUI
 import RealmSwift
 
 struct CurrencyRowDataView: View {
-    @ObservedResults(Rate.self) var rates
     @ObservedRealmObject var rate: Rate
     
     @Binding var baseAmount: Double
@@ -19,14 +18,12 @@ struct CurrencyRowDataView: View {
         CurrencyRowView(value: (rate.result) * baseAmount,
                         symbol: rate.query?.to ?? "",
                         baseValue: $baseAmount,
-                        pendingRefresh: rate.needsRefresh,
                         action: action)
             .onAppear(perform: loadData)
     }
     
     private func loadData() {
-        // TODO: Only fetch data if it's not from today or the refresh flag is set
-        if rate.needsRefresh {
+        if !rate.isToday {
             guard let query = rate.query else {
                 print("Query data is missing")
                 return
@@ -49,7 +46,7 @@ struct CurrencyRowDataView: View {
                     DispatchQueue.main.async {
                         $rate.date.wrappedValue = decodedResponse.date
                         $rate.result.wrappedValue = decodedResponse.result
-                        $rate.pendingRefresh.wrappedValue = false
+//                        $rate.pendingRefresh.wrappedValue = false
                     }
                 } else {
                     print("No data received")
@@ -64,7 +61,6 @@ struct CurrencyRowDataView_Previews: PreviewProvider {
     static var previews: some View {
         let rate = Rate(from: "GBP", to: "USD", date: "now", result: 1.2345)
         let rate2 = Rate(from: "USD", to: "GBP", date: "now", result: 0.87611)
-        rate2.pendingRefresh = true
         
         return List {
             CurrencyRowDataView(rate: rate, baseAmount: .constant(1.0))
