@@ -9,8 +9,6 @@ import Foundation
 
 
 class Symbols {
-    var motd = Motd()
-    var success = false
     var symbols = Dictionary<String, String>()
 }
 
