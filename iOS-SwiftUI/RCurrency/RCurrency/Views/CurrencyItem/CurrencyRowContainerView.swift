@@ -91,11 +91,7 @@ struct CurrencyRowContainerView: View {
             }
             if let decodedResponse = try? JSONDecoder().decode(Rate.self, from: data) {
                 DispatchQueue.main.async {
-                    let newRate = Rate(from: decodedResponse.query?.from ?? "",
-                                       to: decodedResponse.query?.to ?? "",
-                                       date: decodedResponse.date,
-                                       result: decodedResponse.result)
-                    $rates.append(newRate)
+                    $rates.append(decodedResponse)
                 }
             } else {
                 print("No data received")

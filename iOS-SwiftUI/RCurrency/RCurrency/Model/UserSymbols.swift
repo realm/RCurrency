@@ -29,10 +29,13 @@ extension UserSymbols {
     static func bootstrap() {
         do {
             let realm = try Realm()
-            let symbols = ["EUR", "USD", "DKK", "MXN", "AED", "INR"]
-            try realm.write() {
-                realm.delete(realm.objects(UserSymbols.self))
-                realm.add(UserSymbols(baseSymbol: "GBP", symbols: symbols))
+            if realm.objects(UserSymbols.self).first == nil {
+                let symbols = ["EUR", "USD", "DKK", "MXN", "AED", "INR"]
+                try realm.write() {
+                    realm.delete(realm.objects(UserSymbols.self))
+                    realm.add(UserSymbols(baseSymbol: "GBP", symbols: symbols))
+                }
+
             }
         } catch {
             print("Failed to bootstrap user symbols: \(error.localizedDescription)")

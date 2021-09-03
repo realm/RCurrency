@@ -46,7 +46,6 @@ struct CurrencyRowDataView: View {
                     DispatchQueue.main.async {
                         $rate.date.wrappedValue = decodedResponse.date
                         $rate.result.wrappedValue = decodedResponse.result
-//                        $rate.pendingRefresh.wrappedValue = false
                     }
                 } else {
                     print("No data received")
