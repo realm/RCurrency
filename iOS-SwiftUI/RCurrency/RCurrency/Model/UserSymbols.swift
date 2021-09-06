@@ -9,8 +9,8 @@ import Foundation
 import RealmSwift
 
 class UserSymbols: Object, ObjectKeyIdentifiable {
-    @Persisted var baseSymbol = ""
-    @Persisted var symbols = List<String>()
+    @Persisted var baseSymbol: String
+    @Persisted var symbols: List<String>
     
     convenience init (_ baseSymbol: String) {
         self.init()

@@ -11,10 +11,10 @@ import Foundation
 class Rate: Object, ObjectKeyIdentifiable, Codable {
     var motd = Motd()
     var success = false
-    @Persisted var query: Query? = Query()
+    @Persisted var query: Query?
     var info = Info()
-    @Persisted var date = ""
-    @Persisted var result = 0.0
+    @Persisted var date: String
+    @Persisted var result: Double
 }
 
 extension Rate {
@@ -40,8 +40,8 @@ class Motd: Codable {
 }
 
 class Query: EmbeddedObject, ObjectKeyIdentifiable, Codable {
-    @Persisted var from = ""
-    @Persisted var to = ""
+    @Persisted var from: String
+    @Persisted var to: String
     var amount = 0
 }
 
