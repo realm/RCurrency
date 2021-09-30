@@ -43,6 +43,7 @@ struct CurrencyListContainerView: View {
                                              baseAmount: $baseAmount,
                                              symbol: symbol,
                                              refreshNeeded: refreshNeeded)
+                        .listRowSeparator(.hidden)
                 }
                 .onDelete(perform: deleteSymbol)
             }
