@@ -14,19 +14,20 @@ struct CurrencyRowContainerView: View {
     let baseSymbol: String
     @Binding var baseAmount: Double
     let symbol: String
-    var refreshNeeded: Bool
+    var refreshToggle: Bool
     var action: () -> Void = {}
     
+    @State private var previousToggle = false
+    
     var rate: Rate? {
-        rates.filter(
-            NSPredicate(format: "query.from = %@ AND query.to = %@", baseSymbol, symbol)).first
+        rates.where { $0.query.from == baseSymbol && $0.query.to == symbol }.first
     }
     
     var body: some View {
         if let rate = rate {
             HStack {
                 CurrencyRowDataView(rate: rate, baseAmount: $baseAmount, action: action)
-                if refreshNeeded {
+                if refreshToggle != previousToggle {
                     Image(systemName: "arrow.clockwise.icloud")
                         .onAppear(perform: refreshData)
                 }
@@ -40,6 +41,7 @@ struct CurrencyRowContainerView: View {
     private func refreshData() {
         guard let url = URL(string: "https://api.exchangerate.host/convert?from=\(baseSymbol)&to=\(symbol)") else {
             print("Invalid URL")
+            previousToggle = refreshToggle
             return
         }
         
@@ -50,6 +52,7 @@ struct CurrencyRowContainerView: View {
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
+                DispatchQueue.main.async { previousToggle = refreshToggle }
                 return
             }
             if let decodedResponse = try? JSONDecoder().decode(Rate.self, from: data) {
@@ -69,9 +72,11 @@ struct CurrencyRowContainerView: View {
                             print("Unable to update existing rate in Realm")
                         }
                     }
+                    previousToggle = refreshToggle
                 }
             } else {
                 print("No data received")
+                DispatchQueue.main.async { previousToggle = refreshToggle }
             }
         }
         .resume()
@@ -106,6 +111,6 @@ struct CurrencyRowData_Previews: PreviewProvider {
         CurrencyRowContainerView(baseSymbol: "GBP",
                                  baseAmount: .constant(1.0),
                                  symbol: "USD",
-                                 refreshNeeded: false)
+                                 refreshToggle: false)
     }
 }

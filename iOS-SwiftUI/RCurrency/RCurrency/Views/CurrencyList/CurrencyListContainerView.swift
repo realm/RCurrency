@@ -15,7 +15,7 @@ struct CurrencyListContainerView: View {
     @State private var showingAddSymbol = false
     @State private var showingSetBaseSymbol = false
     @State private var baseAmount = 1.0
-    @State private var refreshNeeded = false
+    @State private var refreshToggle = false
     
     var userSymbols: UserSymbols {
         userSymbolResults.first ?? UserSymbols()
@@ -27,7 +27,7 @@ struct CurrencyListContainerView: View {
                 CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
                                          baseAmount: $baseAmount,
                                          symbol: userSymbols.baseSymbol,
-                                         refreshNeeded: refreshNeeded,
+                                         refreshToggle: refreshToggle,
                                          action: { showingSetBaseSymbol.toggle() })
                 HStack {
                     Text("Base currency")
@@ -42,12 +42,12 @@ struct CurrencyListContainerView: View {
                     CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
                                              baseAmount: $baseAmount,
                                              symbol: symbol,
-                                             refreshNeeded: refreshNeeded)
+                                             refreshToggle: refreshToggle)
                         .listRowSeparator(.hidden)
                 }
                 .onDelete(perform: deleteSymbol)
             }
-            .refreshable(action: refreshAll)
+            .refreshable(action: { refreshToggle.toggle() })
             Spacer()
             NavigationLink(destination: SymbolPickerView(action: addSymbol,
                                                          existingSymbols: Array(userSymbols.symbols)),
@@ -113,14 +113,6 @@ struct CurrencyListContainerView: View {
             }
         } catch {
             print("Unable to delete symbol from Realm")
-        }
-    }
-    
-    private func refreshAll() {
-        print ("Refreshing all")
-        refreshNeeded = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            refreshNeeded = false
         }
     }
 }
