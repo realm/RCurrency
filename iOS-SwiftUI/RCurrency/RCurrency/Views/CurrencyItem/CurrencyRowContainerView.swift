@@ -11,11 +11,12 @@ import RealmSwift
 struct CurrencyRowContainerView: View {
     @ObservedResults(Rate.self) var rates
     
+    var isBase = false
     let baseSymbol: String
     @Binding var baseAmount: Double
     let symbol: String
     var refreshToggle: Bool
-    var action: () -> Void = {}
+    var action: (_: String) -> Void = {_ in }
     
     @State private var previousToggle = false
     
@@ -26,7 +27,7 @@ struct CurrencyRowContainerView: View {
     var body: some View {
         if let rate = rate {
             HStack {
-                CurrencyRowDataView(rate: rate, baseAmount: $baseAmount, action: action)
+                CurrencyRowDataView(rate: rate, isBase: isBase, baseAmount: $baseAmount, action: action)
                 if refreshToggle != previousToggle {
                     Image(systemName: "arrow.clockwise.icloud")
                         .onAppear(perform: refreshData)
@@ -45,10 +46,7 @@ struct CurrencyRowContainerView: View {
             return
         }
         
-        print("Refreshing data from \(url.description)")
-        
         let request = URLRequest(url: url)
-        print("Network request: \(url.description)")
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")

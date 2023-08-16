@@ -11,11 +11,13 @@ import RealmSwift
 struct CurrencyRowDataView: View {
     @ObservedRealmObject var rate: Rate
     
+    var isBase = false
     @Binding var baseAmount: Double
-    var action: () -> Void = {}
+    var action: (_: String) -> Void = {_ in }
     
     var body: some View {
-        CurrencyRowView(value: (rate.result) * baseAmount,
+        CurrencyRowView(isBase: isBase,
+                        value: (rate.result) * baseAmount,
                         symbol: rate.query?.to ?? "",
                         baseValue: $baseAmount,
                         action: action)

@@ -13,7 +13,6 @@ struct CurrencyListContainerView: View {
     @ObservedResults(Rate.self) var rates
     
     @State private var showingAddSymbol = false
-    @State private var showingSetBaseSymbol = false
     @State private var baseAmount = 1.0
     @State private var refreshToggle = false
     
@@ -24,11 +23,12 @@ struct CurrencyListContainerView: View {
     var body: some View {
         VStack {
             VStack {
-                CurrencyRowContainerView(baseSymbol: userSymbols.baseSymbol,
+                CurrencyRowContainerView(isBase: true,
+                                         baseSymbol: userSymbols.baseSymbol,
                                          baseAmount: $baseAmount,
                                          symbol: userSymbols.baseSymbol,
                                          refreshToggle: refreshToggle,
-                                         action: { showingSetBaseSymbol.toggle() })
+                                         action: setBaseCurrency)
                 HStack {
                     Text("Base currency")
                         .font(.caption)
@@ -49,19 +49,12 @@ struct CurrencyListContainerView: View {
             }
             .refreshable(action: { refreshToggle.toggle() })
             Spacer()
-            NavigationLink(destination: SymbolPickerView(action: addSymbol,
-                                                         existingSymbols: Array(userSymbols.symbols)),
-                           isActive: $showingAddSymbol) {}
-            NavigationLink(destination: SymbolPickerView(action: setBaseCurrency,
-                                                         existingSymbols: []),
-                           isActive: $showingSetBaseSymbol) {}
         }
         .navigationBarTitle("RCurrency", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    showingAddSymbol.toggle()
-                }) {
+            ToolbarItem(placement: .navigationBarTrailing) { NavigationLink {
+                SymbolPickerView(action: addSymbol, existingSymbols: Array(userSymbols.symbols))
+                } label: {
                     Image(systemName: "plus")
                 }
             }
@@ -69,7 +62,6 @@ struct CurrencyListContainerView: View {
     }
     
     private func setBaseCurrency(_ symbol: String) {
-        showingSetBaseSymbol = false
         do {
             showingAddSymbol = false
             let realm = try Realm()
@@ -121,6 +113,9 @@ struct CurrencyListContainerView_Previews: PreviewProvider {
     static var previews: some View {
         UserSymbols.bootstrap()
         
-        return CurrencyListContainerView()
+        return
+            NavigationStack {
+                CurrencyListContainerView()
+        }
     }
 }

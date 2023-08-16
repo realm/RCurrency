@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct CurrencyRowView: View {
+    var isBase = false
     var value: Double
     let symbol: String
     @Binding var baseValue: Double
-    var action: () -> Void = {}
+    var action: (_: String) -> Void = {_ in }
     
     @State private var amount = "0.0"
     @State private var rate = 0.0
@@ -19,14 +20,25 @@ struct CurrencyRowView: View {
     var body: some View {
         VStack {
             HStack {
-                Button(action: action) {
+                if isBase {
+                    NavigationLink {
+                        SymbolPickerView(action: action, existingSymbols: [])
+                    } label: {
+                        HStack {
+                            Image(symbol.lowercased())
+                            Text("\(symbol): ")
+                                .font(.largeTitle)
+                        }
+                        .foregroundColor(.primary)
+                    }
+                } else {
                     HStack {
                         Image(symbol.lowercased())
                         Text("\(symbol): ")
                             .font(.largeTitle)
                     }
+                    .foregroundColor(.primary)
                 }
-                .foregroundColor(.primary)
                 Spacer()
                 TextField("Amount", text: $amount)
                     .keyboardType(.decimalPad)
